@@ -2,22 +2,29 @@
 #![feature(rustc_private, const_type_name)]
 extern crate rustc_ast;
 extern crate rustc_driver;
+extern crate rustc_hir;
 extern crate rustc_interface;
 extern crate rustc_lint;
+extern crate rustc_middle;
 extern crate rustc_span;
-// extern crate rustfmt_nightly;
-
 
 mod lints;
 
 pub fn rustc_main() {
-    // std::env::set_var("RUSTC_LOG", "warn");
+    std::env::set_var("RUSTC_LOG", "warn");
     // RUSTC_LOG=rustc_infer::infer::error_reporting=info rustc +my_rustc file.rs
     let args = std::env::args().collect::<Vec<_>>();
     rustc_driver::init_rustc_env_logger();
     rustc_driver::RunCompiler::new(&args, &mut CompilerCallback)
         .run()
         .unwrap();
+}
+
+/// emit for rustc compiler plugin
+#[no_mangle]
+fn __rustc_plugin_registrar(reg: &mut rustc_driver::plugin::Registry) {
+    lints::register_early_pass_lints(reg.lint_store);
+    // lints::register_late_pass_lints(reg.lint_store);
 }
 
 struct CompilerCallback;
@@ -32,6 +39,7 @@ impl rustc_driver::Callbacks for CompilerCallback {
         }
         config.register_lints = Some(Box::new(move |_session, lint_store| {
             lints::register_early_pass_lints(lint_store);
+            // lints::register_late_pass_lints(lint_store);
         }));
     }
 

@@ -18,10 +18,11 @@ impl rustc_lint::LintPass for CheckEnumSize {
 
 impl<'tcx> rustc_lint::LateLintPass<'tcx> for CheckEnumSize {
     fn check_item(&mut self, cx: &rustc_lint::LateContext<'_>, item: &rustc_hir::Item<'_>) {
- 
         if let rustc_hir::ItemKind::Enum(ref _def, _) = item.kind {
             let ty = cx.tcx.type_of(item.def_id);
-            let adt = ty.ty_adt_def().expect("already checked whether this is an enum");
+            let adt = ty
+                .ty_adt_def()
+                .expect("already checked whether this is an enum");
             dbg!(&adt.variants);
             let mut temp = vec![];
             for variant in &adt.variants {
@@ -54,12 +55,16 @@ impl<'tcx> rustc_lint::LateLintPass<'tcx> for CheckEnumSize {
             }
             dbg!(min_size_index, max_size_index);
             if temp[max_size_index].0 - temp[min_size_index].0 > 200 {
-                rustc_lint::LintContext::struct_span_lint(cx, &Self::LINT, item.span, |diagnostic| {
-                    let mut diagnostic = diagnostic.build("enum size has waste");
-                    diagnostic.emit();
-                });
+                rustc_lint::LintContext::struct_span_lint(
+                    cx,
+                    &Self::LINT,
+                    item.span,
+                    |diagnostic| {
+                        let mut diagnostic = diagnostic.build("enum size has waste");
+                        diagnostic.emit();
+                    },
+                );
             }
-        
         }
     }
 }

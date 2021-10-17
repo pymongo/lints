@@ -5,10 +5,9 @@ edition = "2021"
 
 [lib]
 doctest = false
-
-#[dev-dependencies]
-#rustfmt-nightly = "1.4" # compile failed! feature(const_fn))] has been removed
-#dissimilar = "1.0" # diff tool dtolnay/dissimilar used by rust-analyzer
+# dylib:  Rust ABI Linux .so format, compiler plugin required
+# cdylib: C    ABI Linux .so format
+crate-type=["rlib", "dylib"]
 
 [package.metadata.rust-analyzer]
 rustc_private = true
