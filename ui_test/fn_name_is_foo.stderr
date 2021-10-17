@@ -1,1 +1,12 @@
-s
+warning: foo is a bad name for function
+ --> /home/w/repos/my_repos/lints/ui_test/fn_name_is_foo.rs:1:1
+  |
+1 | / fn foo() {
+2 | |
+3 | | }
+  | |_^
+  |
+  = note: `#[warn(lints::lints::fn_name_is_foo::fnnameisfoo)]` on by default
+
+warning: 1 warning emitted
+

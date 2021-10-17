@@ -16,7 +16,7 @@ fn ui_test_single_file(path: &str) {
     let mut stderr_file_path = rs_file_path.clone();
     assert!(stderr_file_path.set_extension("stderr"));
 
-    // let expected_stderr = std::fs::read_to_string(stderr_file_path).unwrap();
+    let expected_stderr = std::fs::read_to_string(stderr_file_path).unwrap();
     let stderr = std::process::Command::new("cargo")
         .arg("run")
         // ignore stdout
@@ -35,7 +35,7 @@ fn ui_test_single_file(path: &str) {
         .stderr;
     let stderr = unsafe { String::from_utf8_unchecked(stderr) };
     println!("{}", stderr);
-    // assert_eq!(stderr, expected_stderr);
+    assert_eq!(stderr, expected_stderr);
 }
 
 /// similar to linux [ftw(3)](https://man7.org/linux/man-pages/man3/ftw.3.html)

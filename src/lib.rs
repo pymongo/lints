@@ -5,6 +5,8 @@ extern crate rustc_driver;
 extern crate rustc_interface;
 extern crate rustc_lint;
 extern crate rustc_span;
+// extern crate rustfmt_nightly;
+
 
 mod lints;
 
