@@ -8,7 +8,17 @@ extern crate rustc_span;
 
 mod lints;
 
-pub struct CompilerCallback;
+pub fn rustc_main() {
+    // std::env::set_var("RUSTC_LOG", "warn");
+    // RUSTC_LOG=rustc_infer::infer::error_reporting=info rustc +my_rustc file.rs
+    let args = std::env::args().collect::<Vec<_>>();
+    rustc_driver::init_rustc_env_logger();
+    rustc_driver::RunCompiler::new(&args, &mut CompilerCallback)
+        .run()
+        .unwrap();
+}
+
+struct CompilerCallback;
 
 impl rustc_driver::Callbacks for CompilerCallback {
     fn config(&mut self, config: &mut rustc_interface::interface::Config) {
@@ -54,6 +64,7 @@ impl rustc_driver::Callbacks for CompilerCallback {
         if std::env::var("RUSTC_LOG").is_ok() {
             eprintln!("enter rustc_driver::Callbacks::after_analysis() callback");
         }
-        rustc_driver::Compilation::Continue
+        // stop compiler to codegen because we doesn't link compiler correctly
+        rustc_driver::Compilation::Stop
     }
 }

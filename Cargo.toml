@@ -3,5 +3,8 @@ name = "lints"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+doctest = false
+
 [package.metadata.rust-analyzer]
 rustc_private = true
