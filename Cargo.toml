@@ -7,7 +7,14 @@ edition = "2021"
 doctest = false
 # dylib:  Rust ABI Linux .so format, compiler plugin required
 # cdylib: C    ABI Linux .so format
-crate-type=["rlib", "dylib"]
+crate-type = ["rlib", "dylib"]
+
+[dev-dependencies]
+# mod syn_static_analysis
+syn = { version = "1.0", features = ["full", "visit", "extra-traits"] }
+quote = "1.0"
+walkdir = "2.3"
+rayon = "1.5"
 
 [package.metadata.rust-analyzer]
 rustc_private = true

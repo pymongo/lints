@@ -27,15 +27,14 @@ impl rustc_lint::EarlyLintPass for FnNameIsFoo {
     ) {
         if let rustc_ast::visit::FnKind::Fn(_, ident, ..) = fn_kind {
             if ident.as_str() == "foo" {
-                // rustc_lint::LintContext::struct_span_lint(cx, &Self::LINT, span, |diagnostic| {
-                //     let mut diagnostic = diagnostic.build("foo is a bad name for function");
-                //     diagnostic.emit();
-                // });
-                rustc_lint::LintContext::lint(cx, &Self::LINT, |lint| {
-                    lint.build("foo is a bad name for function")
-                        .set_span(span)
-                        .emit()
+                rustc_lint::LintContext::struct_span_lint(cx, &Self::LINT, span, |diagnostic| {
+                    diagnostic.build("foo is a bad name for function").emit();
                 });
+                // rustc_lint::LintContext::lint(cx, &Self::LINT, |lint| {
+                //     lint.build("foo is a bad name for function")
+                //         .set_span(span)
+                //         .emit()
+                // });
             }
         }
     }

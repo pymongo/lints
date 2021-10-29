@@ -1,10 +1,16 @@
 # custom rustc lints
 
+## How to use these lint framework
+
+1. add this crate as dependency on Cargo.toml
+2. add `#![plugin(lints)]` to your crate root like <examples/compiler_plugin.rs>
+3. cargo check # would apply lints from plugin crate
+
 ## How to run ui_test
 
 > cargo test -- --nocapture
 
-## ~~How to run(custom rustc may not work)~~
+## ~~How to run(may not work or crate std not found)~~
 
 in rust project directory you want to analyze
 

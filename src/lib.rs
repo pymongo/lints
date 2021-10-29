@@ -9,6 +9,9 @@ extern crate rustc_middle;
 extern crate rustc_span;
 
 mod lints;
+/// Experimental static analysis using syn
+#[cfg(test)]
+mod static_analysis_by_syn;
 
 pub fn rustc_main() {
     std::env::set_var("RUSTC_LOG", "warn");
@@ -24,7 +27,7 @@ pub fn rustc_main() {
 #[no_mangle]
 fn __rustc_plugin_registrar(reg: &mut rustc_driver::plugin::Registry) {
     lints::register_early_pass_lints(reg.lint_store);
-    // lints::register_late_pass_lints(reg.lint_store);
+    lints::register_late_pass_lints(reg.lint_store);
 }
 
 struct CompilerCallback;
