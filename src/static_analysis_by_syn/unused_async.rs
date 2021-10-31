@@ -1,7 +1,7 @@
 /// similar to clippy::unused_async lint but use syn to static analysis
 fn unused_async_lint(use_rayon_parallelism: bool) {
     // TODO path read from env
-    let dir_entries = walkdir::WalkDir::new("/home/w/repos/clone_repos/tikv")
+    let dir_entries = walkdir::WalkDir::new("/home/w/repos/clone_repos/lsp-server")
         .into_iter()
         .flatten()
         .collect::<Vec<_>>();
@@ -64,10 +64,10 @@ fn check_file(dir_entry: &walkdir::DirEntry) {
         if ext != "rs" {
             return;
         }
-        if path
-            .components()
-            .any(|x| x == std::path::Component::Normal(std::ffi::OsStr::new("target")) || x == std::path::Component::Normal(std::ffi::OsStr::new(".docker"))  )
-        {
+        if path.components().any(|x| {
+            x == std::path::Component::Normal(std::ffi::OsStr::new("target"))
+                || x == std::path::Component::Normal(std::ffi::OsStr::new(".docker"))
+        }) {
             return;
         }
         let file = match syn::parse_file(&std::fs::read_to_string(path).unwrap()) {
